@@ -1,6 +1,6 @@
-name: UHPlugin
-main: Troispoils.KTPupdate
-version: 0.1
+name: KTPupdate
+main: me.troispoils.ktpupdate.KTPupdate
+version: 0.2
 
 commands:
    uh:

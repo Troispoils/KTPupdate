@@ -1,8 +1,0 @@
-name: KTPupdate
-main: me.troispoils.ktpupdate.KTPupdate
-version: 0.2
-
-commands:
-   uh:
-      description: Ultra Harcore
-      usage: /uh <subcommand>
