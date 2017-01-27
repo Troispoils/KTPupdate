@@ -24,52 +24,26 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class KTPmenu {
         //private Inventory menu;
         private Integer slot = 0;
-        private ArrayList<ItemStack> is = new ArrayList<ItemStack>(); 
-        private ArrayList<ItemMeta> im = new ArrayList<ItemMeta>(); 
         private Server server;
-        
+        private ItemMeta start, team, randteam;
+        private ItemStack applegold, diamond, bucket;
+
         public KTPmenu(){
-            is.add(new ItemStack(Material.APPLE));
-            is.add(new ItemStack(Material.GOLDEN_APPLE));
-            is.add(new ItemStack(Material.BUCKET));
-            is.add(new ItemStack(Material.DIAMOND));
-            is.add(new ItemStack(Material.REDSTONE));
+            applegold = new ItemStack(Material.GOLDEN_APPLE);
+            diamond = new ItemStack(Material.DIAMOND);
+            bucket = new ItemStack(Material.BUCKET);
             
-            for(ItemStack list : is)
-            {
-                im.add(list.getItemMeta());
-            }
+            start = applegold.getItemMeta();
+            team = diamond.getItemMeta();
+            randteam = bucket.getItemMeta();
             
+            start.setDisplayName(ChatColor.GREEN+"Start");
+            team.setDisplayName(ChatColor.GREEN+"Team");
+            randteam.setDisplayName(ChatColor.GREEN+"Random Team");
             
-            //Probleme de name pas bon MDR
-            int i = 0;
-            for(ItemMeta list : im)
-            { 
-                if(i == 0){
-                    list.setDisplayName(ChatColor.GREEN+"Start");
-                }
-                else if (i == 1){
-                    list.setDisplayName(ChatColor.GREEN+"Start Auto");
-                }
-                else if (i == 2){
-                    list.setDisplayName(ChatColor.GREEN+"Border");
-                }
-                else if (i == 3){
-                    list.setDisplayName(ChatColor.GREEN+"Team");
-                }
-                else if (i == 4){
-                    list.setDisplayName(ChatColor.GREEN+"Random Team");
-                }
-                i++;
-            }
-            
-            for(ItemStack ListStack : is)
-            {
-                for(ItemMeta ListMeta : im)
-                {
-                    ListStack.setItemMeta(ListMeta);
-                }
-            }
+            applegold.setItemMeta(start);
+            diamond.setItemMeta(team);
+            bucket.setItemMeta(randteam);
         }
         
         public void openKTPmenu(Server srv, Player pl, ArrayList<KTPTeam> teams)

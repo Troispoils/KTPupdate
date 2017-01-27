@@ -53,12 +53,13 @@ public final class KTPupdate extends JavaPlugin implements ConversationAbandoned
 	private HashMap<String, ConversationFactory> cfs = new HashMap<String, ConversationFactory>();
 	private KTPPrompts uhp = null;
 	private HashSet<String> deadPlayers = new HashSet<String>();
+        private KTPmenu menu = new KTPmenu();
 	
 	@Override
 	public void onEnable() {
 		this.saveDefaultConfig();
-		 
-		File positions = new File("plugins/KTPupdate/positions.txt");
+                
+                File positions = new File("plugins/KTPupdate/positions.txt");
 		if (positions.exists()) {
 			BufferedReader br = null;
 			try {
@@ -275,6 +276,8 @@ public final class KTPupdate extends JavaPlugin implements ConversationAbandoned
 				this.minutesLeft = getEpisodeLength();
 				this.secondsLeft = 0;
 				return true;
+                        } else if (a[0].equalsIgnoreCase("menu")) {
+                                menu.openKTPmenu(this.getServer(), pl, teams);
 			} else if (a[0].equalsIgnoreCase("team")) {
 				Inventory iv = this.getServer().createInventory(pl, 54, "- Teams -");
 				Integer slot = 0;
