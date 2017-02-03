@@ -66,12 +66,9 @@ public class KTPmenu {
                     pl.sendMessage(ChatColor.GRAY+"Ajout de l'equipe dans l'inventaire.");
             }
             
-            slot = 45;
-            for(ItemStack List : is)
-            {
-                menu.setItem(slot, List);
-                slot++;
-            }
+            menu.setItem(48, applegold);
+            menu.setItem(49, diamond);
+            menu.setItem(50, bucket);
             
             pl.openInventory(menu);
         }

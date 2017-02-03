@@ -347,6 +347,88 @@ public final class KTPupdate extends JavaPlugin implements ConversationAbandoned
 	public void shiftEpisode() {
 		this.episode++;
 	}
+        
+        public boolean start(Player player) {
+            if (teams.size() == 0) {
+					for (Player p : getServer().getOnlinePlayers()) {
+						KTPTeam uht = new KTPTeam(p.getName(), p.getName(), ChatColor.WHITE, this);
+						uht.addPlayer(p);
+						teams.add(uht);
+					}
+				}
+				if (loc.size() < teams.size()) {
+					player.sendMessage(ChatColor.RED+"Pas assez de positions de TP");
+					return true;
+				}
+				LinkedList<Location> unusedTP = loc;
+				for (final KTPTeam t : teams) {
+					final Location lo = unusedTP.get(this.random.nextInt(unusedTP.size()));
+					
+					
+					BukkitRunnable start = new BukkitRunnable() {
+
+						public void run() {
+							t.teleportTo(lo);
+							for (Player p : t.getPlayers()) {
+								p.setGameMode(GameMode.SURVIVAL);
+								p.setHealth(20);
+								p.setFoodLevel(20);
+								p.setExhaustion(5F);
+								p.getInventory().clear();
+								p.getInventory().setArmorContents(new ItemStack[] {new ItemStack(Material.AIR), new ItemStack(Material.AIR), 
+										new ItemStack(Material.AIR), new ItemStack(Material.AIR)});
+								p.setExp(0L+0F);
+								p.setLevel(0);
+								p.closeInventory();
+								p.getActivePotionEffects().clear();
+								p.setCompassTarget(lo);
+								setLife(p, 20);
+							}
+						}
+					}; 					
+					start.runTaskLater(this, 10L);					
+					unusedTP.remove(lo);
+				}
+				BukkitRunnable damageOn = new BukkitRunnable() {
+
+					public void run() {
+						damageIsOn = true;
+					}
+				};
+				damageOn.runTaskLater(this, 600L);
+				
+				World w = Bukkit.getWorlds().get(0);
+				w.setGameRuleValue("doDaylightCycle", ((Boolean)getConfig().getBoolean("daylightCycle.do")).toString());
+				w.setTime(getConfig().getLong("daylightCycle.time"));
+				w.setStorm(false);
+				w.setDifficulty(Difficulty.HARD);
+				this.episode = 1;
+				this.minutesLeft = getEpisodeLength();
+				this.secondsLeft = 0;
+				
+				BukkitRunnable episodeTimer = new BukkitRunnable() {
+					public void run() {
+						setMatchInfo();
+						secondsLeft--;
+						if (secondsLeft == -1) {
+							minutesLeft--;
+							secondsLeft = 59;
+						}
+						if (minutesLeft == -1) {
+							minutesLeft = getEpisodeLength();
+							secondsLeft = 0;
+							Bukkit.getServer().broadcastMessage(ChatColor.AQUA+"-------- Fin episode "+episode+" --------");
+							shiftEpisode();
+						}
+					} 
+				};
+				episodeTimer.runTaskTimer(this, 20L, 20L);
+				
+				
+				Bukkit.getServer().broadcastMessage(ChatColor.GREEN+"--- GO ---");
+				this.gameRunning = true;
+				return true;
+        }
 	
 	public boolean isGameRunning() {
 		return this.gameRunning;

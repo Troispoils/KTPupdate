@@ -192,7 +192,7 @@ public class KTPPluginListener implements Listener {
 				c.begin();
 			} else if (ev.getCurrentItem().getType() == Material.GOLDEN_APPLE) {
                             pl.closeInventory();
-                            
+                            this.p.start(pl);
                         }
 		}
 	}
